@@ -33,12 +33,50 @@ public class MainActivity extends AppCompatActivity {
        jsonPlaceHolder=retrofit.create(JsonPlaceHolder.class);
 
        //getPosts();
-        getComment();
+        //getComment();
+        createPost();
 
 
 
 
 
+
+    }
+
+    private void createPost()
+    {
+        Map<String,String> fields= new HashMap<>();
+        fields.put("userId","25");
+        fields.put("title","New Title");
+        Post post=new Post(23,"new title","new text");
+        Call<Post> call=jsonPlaceHolder.createPost(fields);
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(Call<Post> call, Response<Post> response)
+            {
+                if(!response.isSuccessful())
+                {
+                    textView.setText("Code:"+response.code());
+                    return;
+                }
+                
+                Post ResponsePost=response.body();
+                String content="";
+                content+="Code:"+response.code()+"\n";
+                content+="Id: "+ResponsePost.getId()+"\n";
+                content+="User id: "+ResponsePost.getUserId()+"\n";
+                content+="Title:" +ResponsePost.getTitle()+"\n";
+                content+="Body: "+ResponsePost.getText()+"\n";
+
+                textView.append(content);
+
+            }
+
+            @Override
+            public void onFailure(Call<Post> call, Throwable t) {
+                textView.setText(t.getCause().getMessage());
+            }
+        });
     }
 
     private void getComment()
