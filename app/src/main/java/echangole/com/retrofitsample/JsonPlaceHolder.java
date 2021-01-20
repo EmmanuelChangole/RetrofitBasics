@@ -10,6 +10,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -55,11 +57,14 @@ public interface JsonPlaceHolder
     @POST("posts") //Sending  a post request using a map
    Call<Post> createPost(@FieldMap Map<String,String> fields);
 
+    @Headers({"Static-Header1: 123","Static-header2:456"})
     @PUT("posts/{id}")
-    Call<Post> putPost(@Path("id") int id,@Body Post post); //update the entire object
+    Call<Post> putPost(@Header("Dynamic-Header") String header, @Path("id") int id, @Body Post post); //update the entire object
 
     @PATCH("posts/{id}")
-    Call<Post> patchPost(@Path("id") int id,@Body Post post);//only update some part not all object
+    Call<Post> patchPost(@Header("dynamic-header") Map<String,String> headers,
+                         @Path("id") int id,
+                         @Body Post post);//only update some part not all object
     @DELETE("posts/{id}")
     Call<Void> deletePost(@Path("id") int id); //delete post
 
