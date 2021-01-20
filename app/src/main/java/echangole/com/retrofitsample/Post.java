@@ -21,7 +21,7 @@ public class Post
         return UserId;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
